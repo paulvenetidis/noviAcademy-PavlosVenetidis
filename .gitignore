@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/WorldRank.Console/bin/Debug/net8.0
+/WorldRank.Console/obj
