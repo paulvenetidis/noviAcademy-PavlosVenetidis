@@ -2,12 +2,22 @@ using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using WorldRank.Application.Services;
 using WorldRank.Console;
+using Microsoft.Extensions.Configuration;
 
 var logger = LogManager.GetCurrentClassLogger();
 
+// Read appsettings.json
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false)
+    .Build();
+
+var connectionString = configuration.GetConnectionString("WorldRankDb")
+    ?? throw new InvalidOperationException("Connection string 'WorldRankDb' not found.");
+
 // Composition root: register every layer's services, then build the container.
 var services = new ServiceCollection();
-services.AddWorldRank();
+services.AddWorldRank(connectionString);
 
 using var provider = services.BuildServiceProvider();
 

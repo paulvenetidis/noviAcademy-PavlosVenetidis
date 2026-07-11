@@ -8,21 +8,20 @@ namespace WorldRank.Console;
 
 public static class DependencyInjection
 {
-	// Composition root: wires up every layer's services in one place.
-	public static IServiceCollection AddWorldRank(this IServiceCollection services)
-	{
-		// Microsoft.Extensions.Logging with NLog as the provider, so components
-		// can receive an ILogger<T> through constructor injection.
-		services.AddLogging(builder =>
-		{
-			builder.ClearProviders();
-			builder.SetMinimumLevel(LogLevel.Trace); // NLog rules in nlog.config decide the real thresholds
-			builder.AddNLog();
-		});
+    // Composition root: wires up every layer's services in one place.
+    public static IServiceCollection AddWorldRank(this IServiceCollection services, string connectionString)
+    {
+        services.AddLogging(builder =>
+        {
+            builder.ClearProviders();
+            builder.SetMinimumLevel(LogLevel.Trace);
+            builder.AddNLog();
+        });
 
-		services.AddApplication();
-		services.AddInfrastructure();
+        services.AddApplication();
+        services.AddInfrastructure(connectionString);   // ← περνάει το connection string
 
-		return services;
-	}
+        return services;
+    }
 }
+
